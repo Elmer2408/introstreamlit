@@ -54,7 +54,11 @@ input_df = user_input_features()
 if st.button("Predict"):
     prediction = model.predict(input_df)[0]
     proba = model.predict_proba(input_df)[0][1]
-    label = le.inverse_transform([prediction])[0]
+    if le is not None:
+        label = le.inverse_transform([prediction])[0]
+    else:
+        label = "Death" if prediction == 1 else "Alive"
+
     
     st.subheader("Prediction Result")
     st.write(f"Predicted Class: {int(prediction)} ({label})")
